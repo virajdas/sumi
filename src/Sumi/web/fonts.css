@@ -1,0 +1,44 @@
+/* Reading faces. Latin subsets only; anything outside falls back to Literata (which carries Latin Extended). */
+@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 200 800; font-display: block; src: url(newsreader-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 200 800; font-display: block; src: url(newsreader-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "Source Serif 4"; font-style: normal; font-weight: 200 900; font-display: block; src: url(source-serif-4-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Source Serif 4"; font-style: italic; font-weight: 200 900; font-display: block; src: url(source-serif-4-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "EB Garamond"; font-style: normal; font-weight: 400 800; font-display: block; src: url(eb-garamond-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "EB Garamond"; font-style: italic; font-weight: 400 800; font-display: block; src: url(eb-garamond-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: block; src: url(lora-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: block; src: url(lora-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "Bitter"; font-style: normal; font-weight: 100 900; font-display: block; src: url(bitter-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Bitter"; font-style: italic; font-weight: 100 900; font-display: block; src: url(bitter-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: block; src: url(atkinson-hyperlegible-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: italic; font-weight: 400; font-display: block; src: url(atkinson-hyperlegible-latin-400-italic.woff2) format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: block; src: url(atkinson-hyperlegible-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "Atkinson Hyperlegible"; font-style: italic; font-weight: 700; font-display: block; src: url(atkinson-hyperlegible-latin-700-italic.woff2) format("woff2"); }
+@font-face { font-family: "Nunito"; font-style: normal; font-weight: 200 1000; font-display: block; src: url(nunito-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Nunito"; font-style: italic; font-weight: 200 1000; font-display: block; src: url(nunito-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "Figtree"; font-style: normal; font-weight: 300 900; font-display: block; src: url(figtree-latin-wght-normal.woff2) format("woff2-variations"); }
+@font-face { font-family: "Figtree"; font-style: italic; font-weight: 300 900; font-display: block; src: url(figtree-latin-wght-italic.woff2) format("woff2-variations"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: block; src: url(ibm-plex-mono-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: italic; font-weight: 400; font-display: block; src: url(ibm-plex-mono-latin-400-italic.woff2) format("woff2"); }
+@font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 600; font-display: block; src: url(ibm-plex-mono-latin-600-normal.woff2) format("woff2"); }
+
+/*
+  Per-face tuning so every option reads at the same comfortable optical size:
+  --scale  evens out x-heights      --lh   line spacing
+  --measure line length in ems      weights keep body text sturdy enough on screen
+*/
+:root {
+  --face: "Literata", "Iowan Old Style", Georgia, serif;
+  --scale: 1; --lh: 1.78; --measure: 34;
+  --body-wt: 400; --strong-wt: 620; --h1-wt: 350; --h2-wt: 450; --h-wt: 500;
+  --numerals: "onum";
+}
+:root[data-font="newsreader"]   { --face: "Newsreader", "Literata", Georgia, serif;           --scale: 1.07; --lh: 1.7;  --body-wt: 420; --h1-wt: 400; --h2-wt: 500; --h-wt: 550; }
+:root[data-font="source-serif"] { --face: "Source Serif 4", "Literata", Georgia, serif;       --scale: 1.02; --lh: 1.72; --h1-wt: 400; --h2-wt: 500; --h-wt: 560; }
+:root[data-font="garamond"]     { --face: "EB Garamond", "Literata", Georgia, serif;          --scale: 1.16; --lh: 1.66; --measure: 32; --body-wt: 450; --strong-wt: 640; --h1-wt: 450; --h2-wt: 500; --h-wt: 560; }
+:root[data-font="lora"]         { --face: "Lora", "Literata", Georgia, serif;                 --scale: 1;    --lh: 1.76; --h1-wt: 450; --h2-wt: 500; --h-wt: 560; --strong-wt: 640; --numerals: "lnum"; }
+:root[data-font="bitter"]       { --face: "Bitter", "Literata", Georgia, serif;               --scale: 1;    --lh: 1.76; --body-wt: 430; --strong-wt: 650; --h1-wt: 400; --h2-wt: 500; --h-wt: 560; --numerals: "lnum"; }
+:root[data-font="atkinson"]     { --face: "Atkinson Hyperlegible", "Segoe UI", sans-serif;     --scale: 1;    --lh: 1.72; --strong-wt: 700; --h1-wt: 400; --h2-wt: 400; --h-wt: 700; --numerals: "normal"; }
+:root[data-font="nunito"]       { --face: "Nunito", "Segoe UI", sans-serif;                    --scale: 1.01; --lh: 1.74; --body-wt: 420; --strong-wt: 700; --h1-wt: 350; --h2-wt: 600; --h-wt: 650; --numerals: "normal"; }
+:root[data-font="figtree"]      { --face: "Figtree", "Segoe UI", sans-serif;                   --scale: 1;    --lh: 1.72; --strong-wt: 640; --h1-wt: 400; --h2-wt: 550; --h-wt: 600; --numerals: "normal"; }
+:root[data-font="plex-mono"]    { --face: "IBM Plex Mono", "Cascadia Mono", Consolas, monospace; --scale: 0.9; --lh: 1.8; --measure: 36; --strong-wt: 600; --h1-wt: 400; --h2-wt: 600; --h-wt: 600; --numerals: "normal"; }
+:root[data-font="plex-mono"] #doc { font-variant-ligatures: none; }

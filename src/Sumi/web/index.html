@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; media-src *; font-src 'self'">
+<title>Sumi</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fonts.css">
+</head>
+<body>
+  <header id="bar">
+    <div class="side">
+      <button id="btn-toc" title="Contents (Ctrl+\)" aria-label="Contents" aria-expanded="false">
+        <svg viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="12" rx="2"/><path d="M8 4v12"/></svg>
+      </button>
+    </div>
+    <div class="side right">
+      <button id="btn-type" title="Text and appearance" aria-label="Text and appearance" aria-expanded="false"><span class="aa">A<span class="small">a</span></span></button>
+      <button id="btn-open" title="Open (Ctrl+O)" aria-label="Open">
+        <svg viewBox="0 0 20 20"><path d="M3.5 6.5v8a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5V8.5A1.5 1.5 0 0 0 15 7H9.5L8 5H5a1.5 1.5 0 0 0-1.5 1.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <aside id="toc" aria-label="Contents"><ol id="toc-list"></ol></aside>
+
+  <div id="typo" role="dialog" aria-label="Text and appearance">
+    <div class="sizes">
+      <button id="btn-smaller" title="Smaller (Ctrl −)" aria-label="Smaller text"><span class="aa small">A</span></button>
+      <button id="btn-larger" title="Larger (Ctrl +)" aria-label="Larger text"><span class="aa">A</span></button>
+    </div>
+    <div class="themes" id="themes" role="radiogroup" aria-label="Appearance"></div>
+    <ul id="fonts" role="listbox" aria-label="Typeface" title="Ctrl+Shift+F for the next typeface"></ul>
+    <div class="options">
+      <button id="pointer-toggle" role="switch" aria-checked="true"><span>Sumi pointer</span><i class="switch"></i></button>
+    </div>
+  </div>
+
+  <main id="scroller">
+    <section id="welcome">
+      <img src="icon.png" width="64" height="64" alt="">
+      <p class="lead">Open a Markdown file to start reading.</p>
+      <p class="actions"><button id="welcome-open">Open…</button><span class="shortcut">Ctrl+O</span></p>
+      <p class="sub">You can also drag a file into this window.</p>
+    </section>
+    <article id="doc" hidden></article>
+  </main>
+
+  <div id="toast" role="status"></div>
+  <div id="drop"></div>
+
+  <script src="marked.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

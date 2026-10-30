@@ -1,0 +1,9 @@
+# Build output (the installer is published on the Releases page instead)
+bin/
+obj/
+dist/
+
+# Editor and local tooling
+.vs/
+.vscode/
+*.user
