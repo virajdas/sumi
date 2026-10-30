@@ -1,0 +1,52 @@
+name: Mac build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: bash tools/build-mac.sh
+
+      - name: Run it and take screenshots
+        run: |
+          brew install cliclick
+          mkdir -p shots
+          settings="$HOME/Library/Application Support/Sumi"
+          app=dist/mac/Sumi.app/Contents/MacOS/Sumi
+
+          # Starts with saved settings, which must show on first paint.
+          mkdir -p "$settings"
+          printf 'font=lora\nsize=22\ntheme=sepia\ntoc=1\n' > "$settings/settings.ini"
+          "$app" "$PWD/samples/Welcome.md" &
+          pid=$!
+          sleep 8
+          screencapture -x shots/1-settings-loaded.png
+
+          # Keyboard: next appearance, which must be saved.
+          osascript -e 'tell application "System Events" to keystroke "t" using command down' || true
+          sleep 2
+          screencapture -x shots/2-after-cmd-t.png
+
+          # Mouse: the custom pointer over the page.
+          cliclick m:700,300 w:300 m:705,302
+          sleep 1
+          screencapture -x shots/3-pointer.png
+
+          kill -0 "$pid"
+          kill "$pid"
+          cat "$settings/settings.ini"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sumi-mac
+          path: |
+            dist/Sumi.dmg
+            shots/

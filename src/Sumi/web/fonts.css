@@ -37,8 +37,8 @@
 :root[data-font="garamond"]     { --face: "EB Garamond", "Literata", Georgia, serif;          --scale: 1.16; --lh: 1.66; --measure: 32; --body-wt: 450; --strong-wt: 640; --h1-wt: 450; --h2-wt: 500; --h-wt: 560; }
 :root[data-font="lora"]         { --face: "Lora", "Literata", Georgia, serif;                 --scale: 1;    --lh: 1.76; --h1-wt: 450; --h2-wt: 500; --h-wt: 560; --strong-wt: 640; --numerals: "lnum"; }
 :root[data-font="bitter"]       { --face: "Bitter", "Literata", Georgia, serif;               --scale: 1;    --lh: 1.76; --body-wt: 430; --strong-wt: 650; --h1-wt: 400; --h2-wt: 500; --h-wt: 560; --numerals: "lnum"; }
-:root[data-font="atkinson"]     { --face: "Atkinson Hyperlegible", "Segoe UI", sans-serif;     --scale: 1;    --lh: 1.72; --strong-wt: 700; --h1-wt: 400; --h2-wt: 400; --h-wt: 700; --numerals: "normal"; }
-:root[data-font="nunito"]       { --face: "Nunito", "Segoe UI", sans-serif;                    --scale: 1.01; --lh: 1.74; --body-wt: 420; --strong-wt: 700; --h1-wt: 350; --h2-wt: 600; --h-wt: 650; --numerals: "normal"; }
-:root[data-font="figtree"]      { --face: "Figtree", "Segoe UI", sans-serif;                   --scale: 1;    --lh: 1.72; --strong-wt: 640; --h1-wt: 400; --h2-wt: 550; --h-wt: 600; --numerals: "normal"; }
+:root[data-font="atkinson"]     { --face: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;     --scale: 1;    --lh: 1.72; --strong-wt: 700; --h1-wt: 400; --h2-wt: 400; --h-wt: 700; --numerals: "normal"; }
+:root[data-font="nunito"]       { --face: "Nunito", "Segoe UI", system-ui, sans-serif;                    --scale: 1.01; --lh: 1.74; --body-wt: 420; --strong-wt: 700; --h1-wt: 350; --h2-wt: 600; --h-wt: 650; --numerals: "normal"; }
+:root[data-font="figtree"]      { --face: "Figtree", "Segoe UI", system-ui, sans-serif;                   --scale: 1;    --lh: 1.72; --strong-wt: 640; --h1-wt: 400; --h2-wt: 550; --h-wt: 600; --numerals: "normal"; }
 :root[data-font="plex-mono"]    { --face: "IBM Plex Mono", "Cascadia Mono", Consolas, monospace; --scale: 0.9; --lh: 1.8; --measure: 36; --strong-wt: 600; --h1-wt: 400; --h2-wt: 600; --h-wt: 600; --numerals: "normal"; }
 :root[data-font="plex-mono"] #doc { font-variant-ligatures: none; }

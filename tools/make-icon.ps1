@@ -3,7 +3,7 @@ param([string]$Out = "$PSScriptRoot\..\assets\sumi.ico")
 
 Add-Type -AssemblyName System.Drawing
 
-function New-Frame([int]$size) {
+function New-Frame([int]$size, [double]$padRatio = 0.06) {
     $bmp = New-Object System.Drawing.Bitmap $size, $size, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
     $g = [System.Drawing.Graphics]::FromImage($bmp)
     $g.SmoothingMode = 'AntiAlias'
@@ -11,7 +11,7 @@ function New-Frame([int]$size) {
     $g.Clear([System.Drawing.Color]::Transparent)
 
     # Rounded "squircle" tile
-    $pad = [Math]::Max(1, $size * 0.06)
+    $pad = [Math]::Max(1, $size * $padRatio)
     $s = $size - 2 * $pad
     $r = $s * 0.24
     $path = New-Object System.Drawing.Drawing2D.GraphicsPath
@@ -72,4 +72,6 @@ $bw.Close()
 
 # Also keep a large PNG preview
 [System.IO.File]::WriteAllBytes((Join-Path (Split-Path $Out) "sumi-256.png"), $frames[-1])
+# The Mac icon: larger, with the margin macOS icons conventionally have
+[System.IO.File]::WriteAllBytes((Join-Path (Split-Path $Out) "sumi-1024.png"), (New-Frame 1024 0.1))
 Write-Host "Wrote $Out"

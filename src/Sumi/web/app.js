@@ -157,7 +157,7 @@
   marked.setOptions({ gfm: true, breaks: false });
 
   const isRelative = (u) => u && !/^([a-z][a-z0-9+.-]*:|\/\/|#)/i.test(u);
-  let DOC_BASE = "https://doc.local/"; // the host maps this to the document's folder
+  let DOC_BASE = window.__sumiDocBase || "https://doc.local/"; // the host maps this to the document's folder
 
   function slugify(text, used) {
     let base = text.toLowerCase().trim()
@@ -218,7 +218,10 @@
       btn.className = "copy";
       btn.textContent = "Copy";
       btn.addEventListener("click", () => {
-        navigator.clipboard.writeText(code.textContent).then(() => {
+        const copied = navigator.clipboard
+          ? navigator.clipboard.writeText(code.textContent)
+          : Promise.resolve(send("copy:" + code.textContent));
+        copied.then(() => {
           btn.textContent = "Copied";
           setTimeout(() => (btn.textContent = "Copy"), 1200);
         });
@@ -521,6 +524,13 @@
   applySize();
   setFont(font);
   applyPointer();
+  // The Mac menus drive these; shortcut hints use the Mac symbols there.
+  window.__sumi = { stepSize, cycleTheme, cycleFont, toggleToc, resetSize: () => { size = 19; store.set("size", "19"); applySize(); } };
+  if (/Mac/.test(navigator.platform)) {
+    const macKeys = (t) => t.replace("Ctrl+Shift+", "\u21E7\u2318").replace(/Ctrl[+ ]/, "\u2318");
+    document.querySelectorAll("[title]").forEach((el) => { el.title = macKeys(el.title); });
+    document.querySelectorAll(".shortcut").forEach((el) => { el.textContent = macKeys(el.textContent); });
+  }
   send("ready");
 
   // Outside the app (design preview in a browser): ?demo=<url> renders a file.
