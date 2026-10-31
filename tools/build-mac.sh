@@ -9,15 +9,17 @@ rm -rf "$out" dist/Sumi.dmg
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 
 for arch in arm64 x86_64; do
-  xcrun swiftc -O -whole-module-optimization -target "$arch-apple-macos11" \
-    src/Mac/main.swift -o "$out/Sumi-$arch"
+  xcrun swiftc -O -whole-module-optimization -swift-version 5 -target "$arch-apple-macos11" \
+    src/Mac/*.swift -o "$out/Sumi-$arch"
 done
 xcrun lipo -create "$out/Sumi-arm64" "$out/Sumi-x86_64" -output "$app/Contents/MacOS/Sumi"
 xcrun strip -x "$app/Contents/MacOS/Sumi"
 rm "$out"/Sumi-arm64 "$out"/Sumi-x86_64
 
 cp src/Mac/Info.plist "$app/Contents/"
-cp -R src/Sumi/web "$app/Contents/Resources/web"
+mkdir "$app/Contents/Resources/fonts"
+cp src/Sumi/web/*.woff2 "$app/Contents/Resources/fonts/"
+cp src/Sumi/web/icon.png "$app/Contents/Resources/"
 
 iconset="$out/Sumi.iconset"
 mkdir "$iconset"

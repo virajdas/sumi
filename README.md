@@ -1,6 +1,6 @@
 # Sumi
 
-A quiet, minimalist Markdown reader for Windows. About 2 MB installed.
+A quiet, minimalist Markdown reader for Windows and macOS. About 2 MB installed on Windows.
 
 ## Download
 
@@ -34,12 +34,15 @@ The page reloads by itself when the file is saved. Relative images and links to 
 
 The pointer is a small ink dot that grows over things you can click and becomes a slim bar over text. If you prefer the normal Windows pointer, switch off **Sumi pointer** under **Aa**.
 
+On a Mac the shortcuts use <kbd>⌘</kbd> in place of <kbd>Ctrl</kbd>, and settings live in `~/Library/Application Support/Sumi/settings.ini`.
+
 ## Building
 
 Requires the .NET SDK (any version that can build `net48`). Run `.\build.ps1` to produce `dist\SumiSetup.exe`.
 
 - `src/Sumi`: the reader. A WinForms host around the system WebView2 (built into Windows 10/11), with the UI in `web/` (embedded into the exe).
 - `src/Setup`: the self-contained installer and uninstaller.
+- `src/Mac`: the macOS reader, entirely Swift: AppKit and TextKit, with no web view. It shares only the fonts and icon in `src/Sumi/web`. On a Mac with Xcode's command line tools, run `tools/build-mac.sh` to produce `dist/Sumi.dmg`.
 - `tools/make-icon.ps1`: renders `assets/sumi.ico`.
 
 Uses [marked](https://github.com/markedjs/marked) (MIT). All typefaces are under the SIL Open Font License 1.1, via [Fontsource](https://fontsource.org). Their licence texts are in [`licenses/`](licenses).
