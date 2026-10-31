@@ -1,0 +1,61 @@
+name: Windows build
+
+on:
+  push:
+    branches: ['**']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: pwsh
+        run: .\build.ps1
+
+      - name: Install, upgrade, run and uninstall
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $dir = "$env:LOCALAPPDATA\Programs\Sumi"
+          $key = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Sumi"
+          $link = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Sumi.lnk"
+
+          # Upgrading from the last release must work and keep settings.
+          gh release download v1.0.0 -p SumiSetup.exe -D old
+          Start-Process old\SumiSetup.exe -ArgumentList "/quiet" -Wait
+          if ((Get-ItemProperty $key).DisplayVersion -ne "1.0.0") { throw "1.0.0 did not install" }
+          New-Item -ItemType Directory -Force "$env:LOCALAPPDATA\Sumi" | Out-Null
+          "theme=sepia" | Set-Content "$env:LOCALAPPDATA\Sumi\settings.ini"
+
+          Start-Process dist\SumiSetup.exe -ArgumentList "/quiet /associate" -Wait
+          if ((Get-ItemProperty $key).DisplayVersion -ne "1.1.0") { throw "wrong version after upgrade" }
+          foreach ($f in "Sumi.exe", "Uninstall.exe", "WebView2Loader.dll", "Microsoft.Web.WebView2.Core.dll") {
+            if (-not (Test-Path "$dir\$f")) { throw "missing $f" }
+          }
+          if (-not (Test-Path $link)) { throw "no Start menu shortcut" }
+          if (-not (Select-String -Quiet "theme=sepia" "$env:LOCALAPPDATA\Sumi\settings.ini")) { throw "settings lost" }
+          if ((Get-ItemProperty "HKCU:\Software\Classes\.md").'(default)' -ne "Sumi.Markdown") { throw "no .md association" }
+
+          $sumi = Start-Process "$dir\Sumi.exe" -ArgumentList "`"$PWD\samples\Welcome.md`"" -PassThru
+          Start-Sleep 10
+          if ($sumi.HasExited) { throw "Sumi exited with code $($sumi.ExitCode)" }
+          $sumi.Refresh()
+          if ($sumi.MainWindowTitle -ne "Welcome.md") { throw "window title is '$($sumi.MainWindowTitle)'" }
+          Stop-Process $sumi
+
+          Start-Process "$dir\Uninstall.exe" -ArgumentList "/uninstall /quiet" -Wait
+          Start-Sleep 5
+          if (Test-Path $key) { throw "uninstall key left behind" }
+          if (Test-Path $link) { throw "shortcut left behind" }
+          if (Test-Path "$dir\Sumi.exe") { throw "files left behind" }
+          Write-Host "Installer passed"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sumi-windows
+          path: dist/SumiSetup.exe

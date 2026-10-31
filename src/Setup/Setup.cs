@@ -37,7 +37,7 @@ namespace SumiSetup
     static class Installer
     {
         public const string AppName = "Sumi";
-        public const string Version = "1.0.0";
+        public const string Version = "1.1.0";
         const string ProgId = "Sumi.Markdown";
         const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\Sumi";
         static readonly string[] Extensions = { ".md", ".markdown", ".mdown", ".mkd", ".mkdn" };

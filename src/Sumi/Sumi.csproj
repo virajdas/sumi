@@ -11,7 +11,7 @@
     <AssemblyName>Sumi</AssemblyName>
     <ApplicationIcon>..\..\assets\sumi.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Product>Sumi</Product>
     <Description>Sumi — a quiet Markdown reader</Description>
     <Copyright>© 2026</Copyright>
