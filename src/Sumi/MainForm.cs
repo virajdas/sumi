@@ -75,7 +75,12 @@ namespace Sumi
             st.IsGeneralAutofillEnabled = false;
 
             core.AddWebResourceRequestedFilter(AppHost + "*", CoreWebView2WebResourceContext.All);
-            core.WebResourceRequested += (s, e) => ServeEmbedded(env, e);
+            core.AddWebResourceRequestedFilter("https://" + DocHost + "/*", CoreWebView2WebResourceContext.All);
+            core.WebResourceRequested += (s, e) =>
+            {
+                if (new Uri(e.Request.Uri).Host.Equals(DocHost, StringComparison.OrdinalIgnoreCase)) ServeDocumentFile(env, e);
+                else ServeEmbedded(env, e);
+            };
             core.NavigationStarting += OnNavigationStarting;
             core.NewWindowRequested += (s, e) => { e.Handled = true; OpenLink(e.Uri); };
             core.WebMessageReceived += OnWebMessage;
@@ -163,6 +168,27 @@ namespace Sumi
                 "Content-Type: " + MimeFor(name) + "\r\nCache-Control: no-cache");
         }
 
+        // Images and media next to the open document. Only files inside its folder are served.
+        void ServeDocumentFile(CoreWebView2Environment env, CoreWebView2WebResourceRequestedEventArgs e)
+        {
+            try
+            {
+                var dir = Path.GetDirectoryName(currentPath);
+                var rel = Uri.UnescapeDataString(new Uri(e.Request.Uri).AbsolutePath).TrimStart('/').Replace('/', Path.DirectorySeparatorChar);
+                var file = Path.GetFullPath(Path.Combine(dir, rel));
+                var root = dir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+                if (file.StartsWith(root, StringComparison.OrdinalIgnoreCase) && File.Exists(file))
+                {
+                    var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+                    e.Response = env.CreateWebResourceResponse(stream, 200, "OK",
+                        "Content-Type: " + MimeFor(file) + "\r\nCache-Control: no-cache");
+                    return;
+                }
+            }
+            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is NotSupportedException) { }
+            e.Response = env.CreateWebResourceResponse(null, 404, "Not Found", "");
+        }
+
         static string MimeFor(string name)
         {
             switch (Path.GetExtension(name).ToLowerInvariant())
@@ -173,6 +199,17 @@ namespace Sumi
                 case ".woff2": return "font/woff2";
                 case ".svg": return "image/svg+xml";
                 case ".png": return "image/png";
+                case ".jpg": case ".jpeg": return "image/jpeg";
+                case ".gif": return "image/gif";
+                case ".webp": return "image/webp";
+                case ".avif": return "image/avif";
+                case ".bmp": return "image/bmp";
+                case ".ico": return "image/x-icon";
+                case ".mp4": return "video/mp4";
+                case ".webm": return "video/webm";
+                case ".mp3": return "audio/mpeg";
+                case ".ogg": return "audio/ogg";
+                case ".wav": return "audio/wav";
                 default: return "application/octet-stream";
             }
         }
@@ -196,10 +233,6 @@ namespace Sumi
             catch (Exception ex) { SendToast("Couldn’t open file — " + ex.Message); return; }
 
             var core = web.CoreWebView2;
-            var dir = Path.GetDirectoryName(currentPath);
-            core.ClearVirtualHostNameToFolderMapping(DocHost);
-            core.SetVirtualHostNameToFolderMapping(DocHost, dir, CoreWebView2HostResourceAccessKind.Allow);
-
             var name = Path.GetFileName(currentPath);
             core.PostWebMessageAsJson(
                 "{\"type\":\"doc\",\"name\":" + Json(name) +

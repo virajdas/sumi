@@ -1,8 +1,10 @@
 # Sumi
 
-A quiet, minimalist Markdown reader for Windows and macOS. About 2 MB installed on Windows.
+A quiet, minimalist Markdown reader for Windows and macOS. Downloads are under 2 MB.
 
 ## Download
+
+### Windows
 
 **[Download SumiSetup.exe](https://github.com/virajdas/sumi/releases/latest/download/SumiSetup.exe)** (Windows 10 and 11), then open it and click **Install**.
 
@@ -10,6 +12,13 @@ A quiet, minimalist Markdown reader for Windows and macOS. About 2 MB installed 
 - The installer can make Sumi open `.md` files and add a desktop shortcut.
 - Windows may show a SmartScreen warning because the installer isn't code-signed. Click **More info**, then **Run anyway**.
 - To remove Sumi, use *Settings › Apps*.
+
+### macOS
+
+**[Download Sumi.dmg](https://github.com/virajdas/sumi/releases/latest/download/Sumi.dmg)** (macOS 11 or later, Apple silicon or Intel), open it, and drag **Sumi** to **Applications**.
+
+- macOS blocks the first launch because Sumi isn't signed with an Apple Developer ID. Go to **System Settings › Privacy & Security**, scroll down, and click **Open Anyway**.
+- To remove Sumi, drag it from Applications to the Trash.
 
 All versions are on the [Releases](https://github.com/virajdas/sumi/releases) page.
 
@@ -32,9 +41,15 @@ Your theme, typeface, text size, contents list and window position are remembere
 
 The page reloads by itself when the file is saved. Relative images and links to other `.md` files work, and web links open in your browser.
 
-The pointer is a small ink dot that grows over things you can click and becomes a slim bar over text. If you prefer the normal Windows pointer, switch off **Sumi pointer** under **Aa**.
+The pointer is a small ink dot that grows over things you can click and becomes a slim bar over text. If you prefer your system's normal pointer, switch off **Sumi pointer** under **Aa**.
 
-On a Mac the shortcuts use <kbd>⌘</kbd> in place of <kbd>Ctrl</kbd>, and settings live in `~/Library/Application Support/Sumi/settings.ini`.
+### On a Mac
+
+The shortcuts use <kbd>⌘</kbd> in place of <kbd>Ctrl</kbd>, and settings live in `~/Library/Application Support/Sumi/settings.ini`. Sumi for Mac is fully native, so text selection, Look Up, Services and VoiceOver work as they do elsewhere on your Mac. A few things differ from Windows:
+
+- Very wide tables wrap their text instead of scrolling sideways. Code blocks still scroll.
+- `<video>` and `<audio>` tags don't play.
+- Copied text is plain text.
 
 ## Building
 
